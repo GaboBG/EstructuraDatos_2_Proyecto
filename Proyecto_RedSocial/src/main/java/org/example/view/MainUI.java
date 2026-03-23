@@ -1,5 +1,6 @@
 package org.example.view;
 
+
 import org.example.dao.DataStore;
 import org.example.model.Grafo;
 import org.example.model.Usuario;
@@ -16,6 +17,7 @@ public class MainUI extends JFrame {
         setTitle("Grafo Red Social");
         setSize(800,600);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         grafo = new Grafo();
         panel = new GrafoPanel(grafo);
@@ -35,7 +37,13 @@ public class MainUI extends JFrame {
     }
 
     private void cargarUsuarios() {
+
         grafo.getRelaciones().clear();
+
+        if (DataStore.usuarios.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay usuarios");
+            return;
+        }
 
         for (Usuario u : DataStore.usuarios) {
             grafo.agregarUsuario(u);
@@ -45,6 +53,12 @@ public class MainUI extends JFrame {
     }
 
     private void relaciones() {
+
+        if (DataStore.usuarios.size() < 2) {
+            JOptionPane.showMessageDialog(this, "Necesita al menos 2 usuarios");
+            return;
+        }
+
         for(int i=0; i<DataStore.usuarios.size()-1; i++) {
             grafo.agregarAmistad(
                     DataStore.usuarios.get(i),

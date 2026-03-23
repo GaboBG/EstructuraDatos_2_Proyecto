@@ -17,19 +17,17 @@ public class MainMenu extends JFrame {
 
         JButton btnUsuarios = new JButton("Gestión de Usuarios");
         JButton btnGrupos = new JButton("Gestión de Grupos");
-        JButton btnGrafo = new JButton("Ver Red Social (Grafo)");
+        JButton btnGrafo = new JButton("Ver Grafo");
         JButton btnSalir = new JButton("Cerrar Sesión");
 
-        // 🔹 Acciones
-        btnUsuarios.addActionListener(e -> {
-            new UsuarioView(null).setVisible(true); // null porque no viene de login
-        });
-
-        btnGrupos.addActionListener(e -> {
-            new GrupoView().setVisible(true);
-        });
+        btnUsuarios.addActionListener(e -> new UsuarioView(null).setVisible(true));
+        btnGrupos.addActionListener(e -> new GrupoView().setVisible(true));
 
         btnGrafo.addActionListener(e -> {
+            if (org.example.dao.DataStore.usuarios.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Primero cree usuarios");
+                return;
+            }
             new MainUI().setVisible(true);
         });
 
@@ -38,7 +36,6 @@ public class MainMenu extends JFrame {
             dispose();
         });
 
-        // 🔹 Agregar botones
         panel.add(btnUsuarios);
         panel.add(btnGrupos);
         panel.add(btnGrafo);

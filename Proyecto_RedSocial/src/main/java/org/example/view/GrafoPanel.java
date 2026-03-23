@@ -1,6 +1,8 @@
 package org.example.view;
 
-import org.example.model.*;
+
+import org.example.model.Grafo;
+import org.example.model.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,17 +14,30 @@ public class GrafoPanel extends JPanel {
 
     private Grafo grafo;
     private Map<Usuario, Point> posiciones = new HashMap<>();
+    private Random random = new Random();
 
     public GrafoPanel(Grafo grafo) {
         this.grafo = grafo;
-        generarPosiciones();
+        setBackground(Color.WHITE);
     }
 
     private void generarPosiciones() {
-        Random r = new Random();
+
+        int width = getWidth();
+        int height = getHeight();
+
+        // 🔥 FIX: evitar tamaño 0
+        if (width == 0 || height == 0) return;
 
         for (Usuario u : grafo.getRelaciones().keySet()) {
-            posiciones.put(u, new Point(r.nextInt(600), r.nextInt(400)));
+
+            if (!posiciones.containsKey(u)) {
+
+                int x = 50 + random.nextInt(width - 100);
+                int y = 50 + random.nextInt(height - 100);
+
+                posiciones.put(u, new Point(x, y));
+            }
         }
     }
 
@@ -30,33 +45,50 @@ public class GrafoPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Dibujar relaciones (líneas)
+        if (grafo.getRelaciones().isEmpty()) {
+            g.setColor(Color.GRAY);
+            g.drawString("No hay usuarios en el grafo", 20, 20);
+            return;
+        }
+
+        generarPosiciones();
+
+        Graphics2D g2 = (Graphics2D) g;
+
+        // 🔗 RELACIONES
         for (Usuario u : grafo.getRelaciones().keySet()) {
+
             Point p1 = posiciones.get(u);
+            if (p1 == null) continue;
 
             for (Usuario amigo : grafo.getRelaciones().get(u)) {
-                Point p2 = posiciones.get(amigo);
 
-                g.setColor(Color.BLACK);
-                g.drawLine(p1.x, p1.y, p2.x, p2.y);
+                Point p2 = posiciones.get(amigo);
+                if (p2 == null) continue;
+
+                g2.drawLine(p1.x + 20, p1.y + 20, p2.x + 20, p2.y + 20);
             }
         }
 
-        // Dibujar nodos (usuarios)
+        // 👤 NODOS
         for (Usuario u : grafo.getRelaciones().keySet()) {
-            Point p = posiciones.get(u);
 
-            Color color = Color.GRAY;
+            Point p = posiciones.get(u);
+            if (p == null) continue;
+
+            Color color = Color.LIGHT_GRAY;
 
             if (u.getGrupo() != null) {
                 color = u.getGrupo().getColor();
             }
 
-            g.setColor(color);
-            g.fillOval(p.x, p.y, 40, 40);
+            g2.setColor(color);
+            g2.fillOval(p.x, p.y, 40, 40);
 
-            g.setColor(Color.BLACK);
-            g.drawString(u.getUsername(), p.x, p.y);
+            g2.setColor(Color.BLACK);
+            g2.drawOval(p.x, p.y, 40, 40);
+
+            g2.drawString(u.getUsername(), p.x, p.y - 5);
         }
     }
 }
