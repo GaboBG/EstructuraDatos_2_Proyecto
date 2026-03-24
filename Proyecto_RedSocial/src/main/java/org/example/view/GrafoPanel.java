@@ -26,7 +26,7 @@ public class GrafoPanel extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        // 🔥 FIX: evitar tamaño 0
+
         if (width == 0 || height == 0) return;
 
         for (Usuario u : grafo.getRelaciones().keySet()) {
@@ -55,7 +55,7 @@ public class GrafoPanel extends JPanel {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // 🔗 RELACIONES
+        // Relaciones
         for (Usuario u : grafo.getRelaciones().keySet()) {
 
             Point p1 = posiciones.get(u);
@@ -70,7 +70,7 @@ public class GrafoPanel extends JPanel {
             }
         }
 
-        // 👤 NODOS
+        // nodo
         for (Usuario u : grafo.getRelaciones().keySet()) {
 
             Point p = posiciones.get(u);

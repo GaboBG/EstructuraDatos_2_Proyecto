@@ -40,7 +40,7 @@ public class LoginView extends JFrame {
         add(panel);
     }
 
-    // 🔐 LOGIN
+
     private void login() {
 
         String username = txtUser.getText().trim();
@@ -68,13 +68,13 @@ public class LoginView extends JFrame {
                 "Usuario o contraseña incorrectos");
     }
 
-    // 🔄 ABRIR REGISTRO
+
     private void abrirRegistro() {
         new UsuarioView(this).setVisible(true);
         this.setVisible(false);
     }
 
-    // 🚀 MAIN opcional (para probar directo)
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new LoginView().setVisible(true);

@@ -14,7 +14,7 @@ public class UsuarioView extends JFrame {
     private JComboBox<Grupo> cbGrupo;
     private DefaultTableModel modelo;
 
-    private LoginView loginView; // 🔥 referencia
+    private LoginView loginView;
 
     public UsuarioView(LoginView loginView) {
         this.loginView = loginView;
@@ -84,7 +84,7 @@ public class UsuarioView extends JFrame {
 
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
 
-        // 🔥 VOLVER A LOGIN
+
         if (loginView != null) {
             loginView.setVisible(true);
         }
